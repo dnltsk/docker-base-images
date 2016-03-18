@@ -1,0 +1,54 @@
+#!/bin/bash -ex
+# this file automatically creates the Dockerfile for our php-fpm-memcached image
+# run it and check the diff of Dockerfile.php-fpm-memcached carefully
+
+version=$1
+
+if [ -z "${version}" ]
+then
+  echo "usage: $0 <php-version> (php version being one of 55, 56, 70)"
+fi
+
+final_dockerfile=${PWD}/Dockerfile.php${version}
+
+cat  << EOF| tee ${final_dockerfile}.orig > ${final_dockerfile}
+# this is a Dockerfile that flattens out https://github.com/million12/docker-nginx-php / branch php56
+# and uses meteogroup/centos:7 as a base
+FROM meteogroup/centos:7
+
+EOF
+
+tmp_dir=.php${version}-tmp
+rm -rf ${tmp_dir}
+mkdir -p ${tmp_dir}
+cd ${tmp_dir}
+
+function include_dockerfile_repo() {
+  local url=$1
+  local branch=$2
+
+  git clone ${branch:+-b ${branch}} --depth=1 ${url}
+
+  (
+    cd $(basename ${url})
+    echo -e "\n\n########################### ${url}" | tee -a ${final_dockerfile}.orig >> ${final_dockerfile}
+    cat Dockerfile >> ${final_dockerfile}.orig
+    cat Dockerfile | grep -v "^FROM" \
+                   | grep -v "^MAINTAINER" \
+                   | grep -v "^ENTRYPOINT" \
+                   | grep -iv "ruby" \
+                   | grep -iv "source" \
+                   | grep -iv "npm" \
+                   | grep -iv "gem" \
+                   | sed 's/ mysql //g' \
+                   | sed 's/.*ImageMagick.*/yum install -y "ImageMagick GraphicsMagick" \&\& \\/g' \
+                   | sed "s#ADD *container-files#ADD ${tmp_dir}/$(basename ${url})/container-files#g" >> ${final_dockerfile}
+  )
+}
+
+include_dockerfile_repo https://github.com/million12/docker-centos-supervisor
+include_dockerfile_repo https://github.com/million12/docker-nginx
+include_dockerfile_repo https://github.com/million12/docker-nginx-php php${version}
+
+echo -e "\n\n########################### HA! ... our own stuff" | tee -a ${final_dockerfile}.orig >> ${final_dockerfile}
+echo "RUN yum update && yum install -y php-memcache php-memcached" | tee -a ${final_dockerfile}.orig >>  ${final_dockerfile}

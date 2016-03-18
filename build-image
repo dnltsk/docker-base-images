@@ -1,0 +1,20 @@
+#!/bin/bash -ex
+
+docker pull meteogroup/centos:7
+
+if [ $# -eq 0 ]
+then
+  echo "usage: $0 [dockerfile1] [dockerfile2] ..."
+  exit 1
+fi
+
+while [ -n "$1" ]
+do
+  name=$(echo "$1" | sed 's/Dockerfile\.//g')
+
+  docker build -f $1 -t meteogroup/${name} .
+  shift
+done
+
+#vim: ft:sh:
+
