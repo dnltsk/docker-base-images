@@ -13,7 +13,7 @@ while [ -n "$1" ]
 do
   name=$(echo "$1" | sed 's/Dockerfile\.//g')
 
-  docker build -f $1 -t meteogroup/${name} .
+  docker build --no-cache -f $1 -t meteogroup/${name} .
   ${PUSH_IMAGE:+docker push meteogroup/${name}}
   shift
 done
