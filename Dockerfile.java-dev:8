@@ -1,0 +1,2 @@
+FROM meteogroup/java:8
+RUN yum install -y make maven2
