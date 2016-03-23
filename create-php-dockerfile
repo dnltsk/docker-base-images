@@ -58,5 +58,9 @@ echo -e "\n\n########################### HA! ... our own stuff" | tee -a "${fina
 echo "RUN yum update && yum install -y php-memcache php-memcached" | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
 
 cp "${final_dockerfile}" "${final_dev_dockerfile}"
-echo "RUN curl -O http://getcomposer.org/composer.phar && mv composer.phar /usr/bin/composer && chmod +x /usr/bin/composer" >> "${final_dev_dockerfile}"
+cat >> "${final_dev_dockerfile}" << EOF
+RUN "curl -O http://getcomposer.org/composer.phar && mv composer.phar /usr/bin/composer && chmod +x /usr/bin/composer; \
+     yum install -y git; \
+     bash <(curl -f http://rpmrepo.de.meteogroup.net/sourcebin/haarp-install)"
+EOF
 
