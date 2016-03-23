@@ -1,5 +1,5 @@
 #!/bin/bash -ex
-
+# for development, call with NOCACHE=false to use docker cache
 docker pull meteogroup/centos:7
 
 if [ $# -eq 0 ]
@@ -13,7 +13,7 @@ while [ -n "$1" ]
 do
   name=$(echo "$1" | sed 's/Dockerfile\.//g')
 
-  docker build --no-cache -f $1 -t meteogroup/${name} .
+  docker build --no-cache=${NOCACHE:-true} -f $1 -t meteogroup/${name} .
   ${PUSH_IMAGE:+docker push meteogroup/${name}}
   shift
 done
