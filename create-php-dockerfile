@@ -3,6 +3,7 @@
 # run it and check the diff of Dockerfile.php-fpm-memcached carefully
 
 version=$1
+root=${PWD}
 
 if [ -z "${version}" ]
 then
@@ -20,9 +21,11 @@ FROM meteogroup/centos:7
 
 EOF
 
-tmp_dir=.php${version}-tmp
-rm -rf ${tmp_dir}
-mkdir -p ${tmp_dir}
+container_files_dir=php-${version}-container-files
+rm -rf ${container_files_dir}
+mkdir -p ${container_files_dir}
+
+tmp_dir=$(mktemp -d .php-${version}-XXXXX)
 cd ${tmp_dir}
 
 function include_dockerfile_repo() {
@@ -32,7 +35,9 @@ function include_dockerfile_repo() {
   git clone ${branch:+-b ${branch}} --depth=1 ${url}
 
   (
+    set -xe
     cd $(basename ${url})
+    cp -a container-files ${root}/${container_files_dir}/$(basename ${url})
     echo -e "\n\n########################### ${url}" | tee -a "${final_dockerfile}.orig" >> "${final_dockerfile}"
     cat Dockerfile >> "${final_dockerfile}.orig"
     cat Dockerfile | grep -v "^FROM" \
@@ -46,7 +51,7 @@ function include_dockerfile_repo() {
                    | grep -iv "redis" \
                    | sed 's/ mysql //g' \
                    | sed 's/.*ImageMagick.*/yum install -y "ImageMagick GraphicsMagick" \&\& \\/g' \
-                   | sed "s#ADD *container-files#ADD ${tmp_dir}/$(basename ${url})/container-files#g" >> "${final_dockerfile}"
+                   | sed "s#ADD *container-files#ADD ${container_files_dir}/$(basename ${url})#g" >> "${final_dockerfile}"
   )
 }
 
@@ -63,4 +68,4 @@ RUN bash -exc "curl -O http://getcomposer.org/composer.phar && mv composer.phar 
                yum install -y git; \\
                bash <(curl -f http://rpmrepo.de.meteogroup.net/sourcebin/haarp-install)"
 EOF
-
+rm -rf ${tmp_dir}

@@ -20,7 +20,7 @@ RUN \
   easy_install supervisor
 
 # Add supervisord conf, bootstrap.sh files
-ADD .php56-tmp/docker-centos-supervisor/container-files /
+ADD php-56-container-files/docker-centos-supervisor /
 
 VOLUME ["/data"]
 
@@ -28,7 +28,7 @@ VOLUME ["/data"]
 
 ########################### https://github.com/million12/docker-nginx
 
-ADD .php56-tmp/docker-nginx/container-files/etc/yum.repos.d/nginx.repo /etc/yum.repos.d/
+ADD php-56-container-files/docker-nginx/etc/yum.repos.d/nginx.repo /etc/yum.repos.d/
 
 RUN \
   yum install -y nginx && \
@@ -46,7 +46,7 @@ RUN \
   openssl req -new -key /etc/nginx/ssl/dummy.key -out /etc/nginx/ssl/dummy.csr -subj "/C=GB/L=London/O=Company Ltd/CN=docker" && \
   openssl x509 -req -days 3650 -in /etc/nginx/ssl/dummy.csr -signkey /etc/nginx/ssl/dummy.key -out /etc/nginx/ssl/dummy.crt
 
-ADD .php56-tmp/docker-nginx/container-files /
+ADD php-56-container-files/docker-nginx /
 
 ENV \
   NGINX_GENERATE_DEFAULT_VHOST=false \
@@ -57,7 +57,7 @@ EXPOSE 80 443
 
 ########################### https://github.com/million12/docker-nginx-php
 
-ADD .php56-tmp/docker-nginx-php/container-files/config/install* /config/
+ADD php-56-container-files/docker-nginx-php/config/install* /config/
 
 RUN \
   rpm --rebuilddb && yum update -y && \
@@ -87,7 +87,7 @@ RUN \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
   chown www /usr/local/bin/composer
 
-ADD .php56-tmp/docker-nginx-php/container-files /
+ADD php-56-container-files/docker-nginx-php /
 
 ENV STATUS_PAGE_ALLOWED_IP=127.0.0.1
 
