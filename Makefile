@@ -3,7 +3,7 @@ reportdir=testreports
 # order matters!
 images=centos:7 java:7 java:8 java-dev:8 php:56 php-dev:56 testrunner
 
-build-all:
+build-all: clean
 	docker pull centos:7
 
 	# not using Dockerfile.* as the order matters!
@@ -18,3 +18,6 @@ test-all:
 
 reports:
 	docker run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) golang ./create-junit-reports.sh $(reportdir) $(shell id -u)
+
+clean:
+	git clean -fdx
