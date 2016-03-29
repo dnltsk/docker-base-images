@@ -12,7 +12,9 @@ it_should_have_git_installed() {
 }
 
 it_should_have_decent_git_installed() {
+  SKIP_TEST
   git remote get-url origin
+  assert $? 0
 }
 
 it_should_have_make_installed() {
