@@ -1,0 +1,26 @@
+#!/bin/bash
+version=${1:?usage: $0 <php version (e.g. 56)>}
+
+source bashspec.sh
+
+it_should_have_the_latest_php_image_version() {
+  tmp_dir=$(mktemp -d .php-compare-${version}.XXXXXX)
+  cd ${tmp_dir}
+  ../create-php-dockerfile ${version}
+
+  rm *.orig *.bak
+
+  for f in *
+  do
+    echo "verifying $f"
+    if ! diff -r $f ../$f
+    then
+      echo "$f was updated in the original php image"
+      exit 1
+    fi
+  done
+
+  rm -rf ${tmp_dir}
+}
+
+run_tests

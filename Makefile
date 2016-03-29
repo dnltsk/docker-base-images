@@ -9,11 +9,12 @@ build-all: clean
 	# not using Dockerfile.* as the order matters!
 	for image in $(images); do PUSH_IMAGE=$(PUSH_IMAGE) NOCACHE=true ./build-image Dockerfile.$${image}; done
 
-	make reports
+	make test-all
 
 test-all:
 	rm -rf $(reportdir) *.xml
 	reportdir=$(reportdir) ./test-image test.*
+	./compare-against-upstream-php 56 | tee $(reportdir)/php-56-latest.log
 	make reports
 
 reports:
