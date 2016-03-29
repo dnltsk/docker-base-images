@@ -1,0 +1,19 @@
+#!/bin/bash
+source bashspec.sh
+
+it_should_have_haarp_installed() {
+  haarp
+  assert $? 0
+}
+
+it_should_have_git_installed() {
+  git --help
+  assert $? 0
+}
+
+it_should_have_make_installed() {
+  make --help
+  assert $? 0
+}
+
+run_tests

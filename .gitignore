@@ -1,7 +1,8 @@
 *.orig
 *.swp
 .DS_Store
-.php*-tmp
+.php*
+*.bak
 /*.xml
 /target
 /testreports

@@ -1,7 +1,7 @@
 reportdir=testreports
 
 # order matters!
-images=centos:7 golang java:7 java:8 java-dev:8 php:56 php-dev:56 testrunner
+images=centos:7 centos-dev:7 golang java:7 java:8 java-dev:8 php:56 php-dev:56 testrunner
 
 build-all: clean
 	docker pull centos:7

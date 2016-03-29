@@ -1,0 +1,3 @@
+FROM meteogroup/centos:7
+RUN yum install -y git make
+RUN bash -xce "bash <(curl -f http://rpmrepo.de.meteogroup.net/sourcebin/haarp-install)"
