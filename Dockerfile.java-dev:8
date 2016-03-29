@@ -1,3 +1,3 @@
-FROM meteogroup/centos-dev:8
+FROM meteogroup/centos-dev:7
 RUN yum install -y epel-release && yum install -y make java-1.8.0-openjdk-devel maven
 ADD java-dev-container-files/_m2/* /root/.m2/
