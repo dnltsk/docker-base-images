@@ -7,7 +7,7 @@ build-all: clean
 	docker pull centos:7
 
 	# not using Dockerfile.* as the order matters!
-	for image in $(images); do PUSH_IMAGE=$(PUSH_IMAGE) NOCACHE=true ./build-image Dockerfile.$${image}; done
+	set -e; for image in $(images); do PUSH_IMAGE=$(PUSH_IMAGE) NOCACHE=true ./build-image Dockerfile.$${image}; done
 
 	make test-all
 

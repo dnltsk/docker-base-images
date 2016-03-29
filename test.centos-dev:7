@@ -11,6 +11,10 @@ it_should_have_git_installed() {
   assert $? 0
 }
 
+it_should_have_decent_git_installed() {
+  git remote get-url origin
+}
+
 it_should_have_make_installed() {
   make --help
   assert $? 0
