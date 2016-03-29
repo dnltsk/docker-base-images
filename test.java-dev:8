@@ -14,9 +14,8 @@ it_should_run_correct_maven_version() {
 }
 
 it_should_have_haarp_installed() {
-  haarp --
-  assert~ "$(mvn -version 2>&1)" "Apache Maven 3.0."
-
+  haarp
+  assert $? 0
 }
 
 it_should_run_correct_maven_version() {

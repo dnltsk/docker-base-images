@@ -11,4 +11,9 @@ it_should_be_possible_to_go_get_stuff() {
   assert $? 0
 }
 
+it_should_have_haarp_installed() {
+  haarp
+  assert $? 0
+}
+
 run_tests
