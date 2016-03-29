@@ -1,0 +1,4 @@
+FROM meteogroup/centos:7
+RUN yum install -y git
+RUN curl -Lf https://golang.org/dl/go1.6.linux-amd64.tar.gz | tar --directory=/usr/local -zxv
+ENV GOROOT="/usr/local/go" PATH="$PATH:/usr/local/go/bin" GOPATH=/go

@@ -1,0 +1,14 @@
+#!/bin/bash
+source bashspec.sh
+
+it_should_have_go_executable_in_path() {
+  go version
+  assert $? 0
+}
+
+it_should_be_possible_to_go_get_stuff() {
+  go get -u github.com/jstemmer/go-junit-report
+  assert $? 0
+}
+
+run_tests
