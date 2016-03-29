@@ -1,0 +1,17 @@
+#!/bin/bash -ex
+mkdir -p ${reportdir:=testreports}
+
+if [ $# -eq 0 ]
+then
+  echo "usage: $0 [test.image1] [test.image2] ..."
+  exit 1
+fi
+
+while [ -n "$1" ]
+do
+  test_file=$1
+  image_name=meteogroup/${test_file#*.}
+
+  docker run --rm -v ${PWD}:${PWD} -w ${PWD} ${image_name} bash $1 2>&1 | tee "${reportdir}/${test_file}.log"
+  shift
+done

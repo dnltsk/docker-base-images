@@ -1,0 +1,8 @@
+#!/bin/bash
+source bashspec.sh
+
+it_should_run_correct_java_version() {
+  assert~ "$(java -version 2>&1)" "1.8.0"
+}
+
+run_tests

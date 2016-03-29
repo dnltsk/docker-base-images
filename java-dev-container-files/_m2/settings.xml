@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <servers>
+    <server>
+      <id>meteonexus</id>
+      <username>readonly</username>
+      <password>{jGfaYoxL2/cHzonfEnZbX82Gy642lDFadJbEXNRPo8A=}</password>
+    </server>
+  </servers>
+
+  <mirrors>
+    <mirror>
+      <id>meteonexus</id>
+      <mirrorOf>*</mirrorOf>
+      <url>http://ci.de.meteogroup.net/nexus/content/groups/public/</url>
+    </mirror>
+  </mirrors>
+
+  <profiles>
+    <profile>
+      <id>meteonexus</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+    <profile>
+      <id>sonar</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <!-- optional URL to server. Default value is http://localhost:9000 -->
+        <sonar.host.url>
+          http://localhost:9000
+        </sonar.host.url>
+      </properties>
+    </profile>
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>meteonexus</activeProfile>
+  </activeProfiles>
+</settings>

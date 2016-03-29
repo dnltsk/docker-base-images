@@ -1,3 +1,4 @@
 FROM meteogroup/java:8
 RUN yum install -y epel-release && yum install -y make java-1.8.0-openjdk-devel maven
 RUN bash -xce "bash <(curl -f http://rpmrepo.de.meteogroup.net/sourcebin/haarp-install)"
+ADD java-dev-container-files/_m2/* /root/.m2/

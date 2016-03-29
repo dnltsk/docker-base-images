@@ -1,3 +1,7 @@
 *.orig
-.php*-tmp
+*.swp
 .DS_Store
+.php*-tmp
+/*.xml
+/target
+/testreports

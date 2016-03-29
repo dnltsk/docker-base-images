@@ -22,10 +22,17 @@ where `<php-version>` is something like `56` for php version 5.6, `70` for php 7
 
 will create the file `Dockerfile.php:56`, `Dockerfile.php:56.orig` and `Dockerfile.php-dev:56` . Compare `Dockerfile.php:56` and `Dockerfile.php:56.orig` as the script removes stuff that should not be part of a php runtime.
 
-## building and pushing docker images
+## building one or more docker images
 
-    ./build-image [dockerfile1] [dockerfile2] ...
+    ./build-image [Dockerfile.<suffix1>] [Dockerfile.<suffix2>] ...
 
-in order to push the artifacts as well, set `PUSH_IMAGE=1`:
+## testing one or more docker images
 
-    PUSH_IMAGE=1 ./build-image [dockerfile1] [dockerfile2] ...
+    ./test-image [test.<suffix1>] [test.<suffix2>]
+
+## build, test & push
+
+    PUSH_IMAGE=1 ./build-image [Dockerfile.<suffix1>] [Dockerfile.<suffix2>] ...
+
+will build, test and push the docker image. Note that each docker
+
