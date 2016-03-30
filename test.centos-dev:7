@@ -11,6 +11,12 @@ it_should_have_git_installed() {
   assert $? 0
 }
 
+it_should_have_which_installed() {
+  which which
+  assert $? 0
+}
+
+
 it_should_have_decent_git_installed() {
   SKIP_TEST
   git remote get-url origin
