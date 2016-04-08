@@ -7,6 +7,7 @@ it_should_have_the_latest_php_image_version() {
   tmp_dir=$(mktemp -d .php-compare-${version}.XXXXXX)
   cd ${tmp_dir}
   ../create-php-dockerfile ${version}
+  cp -a ../php-${version}-container-files/meteogroup php-${version}-container-files/
 
   rm *.orig *.bak
 

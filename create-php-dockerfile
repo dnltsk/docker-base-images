@@ -22,8 +22,6 @@ FROM meteogroup/centos:7
 EOF
 
 container_files_dir=php-${version}-container-files
-rm -rf ${container_files_dir}
-mkdir -p ${container_files_dir}
 
 tmp_dir=$(mktemp -d .php-${version}-XXXXX)
 cd ${tmp_dir}
@@ -37,7 +35,9 @@ function include_dockerfile_repo() {
   (
     set -xe
     cd $(basename ${url})
-    cp -a container-files ${root}/${container_files_dir}/$(basename ${url})
+    rm -rf ${root}/${container_files_dir}/$(basename ${url})
+    mkdir -p ${root}/${container_files_dir}/$(basename ${url})
+    cp -a container-files/* ${root}/${container_files_dir}/$(basename ${url})
     echo -e "\n\n########################### ${url}" | tee -a "${final_dockerfile}.orig" >> "${final_dockerfile}"
     cat Dockerfile >> "${final_dockerfile}.orig"
     cat Dockerfile | grep -v "^FROM" \
@@ -60,7 +60,9 @@ include_dockerfile_repo https://github.com/million12/docker-nginx
 include_dockerfile_repo https://github.com/million12/docker-nginx-php php${version}
 
 echo -e "\n\n########################### HA! ... our own stuff" | tee -a "${final_dockerfile}.orig" >> "${final_dockerfile}"
-echo "RUN yum update && yum install -y php-memcache php-memcached" | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
+echo "RUN yum update && yum install -y php-memcache php-memcached && yum clean all" | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
+echo "ADD php-56-container-files/meteogroup /" | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
+echo 'CMD ["cat", "/IMAGE_INFO"]' | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
 
 cp "${final_dockerfile}" "${final_dev_dockerfile}"
 echo "RUN bash -exc 'curl -O http://getcomposer.org/composer.phar && mv composer.phar /usr/bin/composer && chmod +x /usr/bin/composer;'" >> "${final_dev_dockerfile}"

@@ -11,11 +11,14 @@ build-all: clean
 
 	make test-all
 
-test-all:
+test-all: php-56-test-files/vendor
 	rm -rf $(reportdir) *.xml
 	reportdir=$(reportdir) ./test-image test.*
-	./compare-against-upstream-php 56 | tee $(reportdir)/php-56-latest.log
+	./compare-against-upstream-php 56
 	make reports
+
+php-56-test-files/vendor:
+	docker run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR)/php-56-test-files meteogroup/php-dev:56 composer install
 
 reports:
 	docker run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) golang ./create-junit-reports.sh $(reportdir) $(shell id -u)
@@ -23,3 +26,4 @@ reports:
 clean:
 	- find .php-* -name .git -exec rm -rf {} \;
 	git clean -fdx
+

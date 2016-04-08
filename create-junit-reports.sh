@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 reportdir=$1
 uid=$2
 

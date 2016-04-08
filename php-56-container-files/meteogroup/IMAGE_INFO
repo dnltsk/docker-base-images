@@ -1,0 +1,34 @@
+This is a php image that is _based_ on
+
+   https://github.com/million12/docker-nginx-php
+
+but limits the installed software to the use of _running_ php / nginx / fpm.
+
+# Usage
+
+Make your document root
+
+  /data/www/project/public
+
+and run
+
+  /config/bootstrap.sh
+
+Nginx will be listening on port 8080
+
+Changes to the original image:
+- all output goes to stderr / stdout
+
+removed software:
+ - ruby
+ - npm
+ - gem
+ - npm
+ - gem
+ - make
+ - redis
+ - mysql
+
+added software:
+ - php-memcache
+ - php-memcached

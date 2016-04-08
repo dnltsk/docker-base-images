@@ -6,3 +6,13 @@
 /*.xml
 /target
 /testreports
+/php-56-test-files/.composer/
+/php-56-test-files/vendor/
+
+# files from haarp init that should not be checked in
+/.build_tmp
+/build-docker-image
+/docker-compose.yml
+/render-docker-compose
+/version.txt
+# haarp files end

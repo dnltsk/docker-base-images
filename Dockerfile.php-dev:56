@@ -93,5 +93,7 @@ ENV STATUS_PAGE_ALLOWED_IP=127.0.0.1
 
 
 ########################### HA! ... our own stuff
-RUN yum update && yum install -y php-memcache php-memcached
+RUN yum update && yum install -y php-memcache php-memcached && yum clean all
+ADD php-56-container-files/meteogroup /
+CMD ["cat", "/IMAGE_INFO"]
 RUN bash -exc 'curl -O http://getcomposer.org/composer.phar && mv composer.phar /usr/bin/composer && chmod +x /usr/bin/composer;'
