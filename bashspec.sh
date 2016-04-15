@@ -1,4 +1,18 @@
-function run_test() {
+# Copyright (C) 2015-2016 innoQ Deutschland GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
+
+# This is a mini bash test framework that outputs the test like go test does
+# For usage see files tests.sh and failing-tests.sh and execute them to see
+# bashspec in action
+
+run_test() {
   local function=$1
 
   echo "=== RUN ${function}"
@@ -21,45 +35,64 @@ function run_test() {
     cat /tmp/${function}.testlog | sed 's/^/	/g'
     printf "\terror code: %d\n" ${result}
     echo "error occured in ${function}"
-    compgen -A function | grep -o tear_down_testing_env && tear_down_testing_env
   fi
 }
 
-function SKIP_TEST() {
+SKIP_TEST() {
   exit 255
 }
 
-function assert~() {
-  assert "$(echo $1 | grep -m1 -o "$2"|head -n1)" "$2"
+assert_re() {
+  echo $1 | grep -E -m1 -o "$2" | head -n1 | grep -E "$2"
+  assert 0 $? "checking '$1' to match '$2'"
 }
 
-function assert() {
+assert() {
   result=$1
   expected=$2
   description=$3
+
+  # we just want a command to succeed
+  if [ -z "${expected}" ]
+  then
+    ${result}
+    result=$?
+    expected=0
+    description="expecting command '$1' to succeed"
+  fi
 
   if [ "${result}" != "${expected}" ]
   then
     if [ -n "${description}" ]
     then
-      echo -e "\033[1;38;40mwhile testing ${description}\033[m"
+      echo -e "\033[1;38;40m${description}\033[m"
     fi
-    echo -e "\033[1;38;40merror: in test ${current_test} expected '${result}' to be '${expected}'\033[m"
+    echo -e "error: in test ${current_test} \033[1;38;40mexpected '${result}' to be '${expected}'\033[m"
     exit 1
   else
-    echo "###################################### OK ##########################################"
+    set +x
+    echo "######################################## PASSED TEST: ${description:-${result} == ${expected}} "
+    set -x
   fi
 }
 
-function run_tests() {
+add_test_file() {
+  __FILES="${__FILES} $1"
+  source $1
+}
+
+
+run_tests() {
+  functions=$(grep -ho "^it_should[a-zA-Z_]*" $0 ${__FILES})
+
   # call setup function if present
-  function_list=$(compgen -A function | grep -o setup_testing_env)
+  function_list=$(echo "${functions}" | grep -o before_all)
 
   # add all functions starting with 'it_' to  the function list
-  function_list="${function_list} $(compgen -A function | grep "^it_" | grep "${TESTS:-.}")"
+  function_list="${function_list} $(echo "${functions}" | grep "^it_" | grep "${TESTS:-.}")"
 
   # call tear down function if present
-  function_list="${function_list} $(compgen -A function | grep -o tear_down_testing_env)"
+  function_list="${function_list} $(echo "${functions}" | grep -o after_all)"
 
   for f in ${function_list}
   do
