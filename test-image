@@ -12,6 +12,6 @@ do
   test_file=$1
   image_name=meteogroup/${test_file#*.}
 
-  docker run --rm -v ${PWD}:${PWD} -w ${PWD} ${image_name} bash $1 2>&1 | tee "${reportdir}/${test_file}.log"
+  docker run --rm -v ${PWD}:${PWD} -w ${PWD} ${image_name} sh  $1 2>&1 | tee "${reportdir}/${test_file}.log"
   shift
 done

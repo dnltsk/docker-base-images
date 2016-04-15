@@ -1,5 +1,5 @@
 #!/bin/bash
-source bashspec.sh
+source ./bashspec.sh
 
 it_should_have_haarp_installed() {
   haarp
