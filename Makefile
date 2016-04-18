@@ -21,5 +21,5 @@ reports:
 	docker run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) golang ./create-junit-reports.sh $(reportdir) $(shell id -u)
 
 clean:
-	find .php-* -name .git -exec rm -rf {} \;
+	find .php-* -name .git -exec rm -rf {} \; || exit 0
 	git clean -fdx
