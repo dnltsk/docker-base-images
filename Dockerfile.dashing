@@ -5,6 +5,6 @@ MAINTAINER daniel.rossbach@meteogroup.net
 RUN apk --no-cache upgrade && \
   apk --no-cache add --virtual .ruby-builddeps gcc libc-dev make g++ && \
   apk --no-cache add nodejs && \
-  gem install dashing && gem install bundler && dashing new dashboard && cd dashboard && bundle install && \
+  gem install dashing && gem install bundler && dashing new dashboard && cd dashboard && bundle install && cd .. && rm -rf dashboard && \
   apk del .ruby-builddeps
 
