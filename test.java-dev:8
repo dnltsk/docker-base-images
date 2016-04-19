@@ -18,7 +18,7 @@ it_should_have_haarp_installed() {
   assert $? 0
 }
 
-it_should_run_correct_maven_version() {
+it_should_have_maven_setting_files() {
   test -e /root/.m2/settings.xml
   assert $? 0
 
