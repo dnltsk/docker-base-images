@@ -7,7 +7,8 @@ STDERR_FILE=/tmp/stderr
 before_all() {
   mkdir -p /data/www/project
   cp -a ${PWD}/php-56-test-files/* /data/www/project
-  /config/bootstrap.sh > ${STDOUT_FILE} 2> ${STDERR_FILE} & wait for nginx to respond
+  /config/bootstrap.sh > ${STDOUT_FILE} 2> ${STDERR_FILE} &
+  # wait for nginx to respond
   for _ in $(seq 0 50)
   do
     sleep 0.1

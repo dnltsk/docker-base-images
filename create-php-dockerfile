@@ -60,7 +60,7 @@ include_dockerfile_repo https://github.com/million12/docker-nginx
 include_dockerfile_repo https://github.com/million12/docker-nginx-php php${version}
 
 echo -e "\n\n########################### HA! ... our own stuff" | tee -a "${final_dockerfile}.orig" >> "${final_dockerfile}"
-echo "RUN yum update && yum install -y php-memcache php-memcached && yum clean all" | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
+echo "RUN yum update -y && yum install -y php-memcache php-memcached && yum clean all" | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
 echo "ADD php-56-container-files/meteogroup /" | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
 echo 'CMD ["cat", "/IMAGE_INFO"]' | tee -a "${final_dockerfile}.orig" >>  "${final_dockerfile}"
 
