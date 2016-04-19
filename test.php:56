@@ -1,8 +1,8 @@
 #!/bin/bash
-source ./bashspec.sh
+source ./spec.sh
 
 it_should_run_correct_php_version() {
-  assert_re "$(php --version 2>&1)" "PHP 5.6."
+  assert_match "$(php --version 2>&1)" "PHP 5.6."
 }
 
 run_tests

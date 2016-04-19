@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./bashspec.sh
+source ./spec.sh
 
 it_should_have_go_executable_in_path() {
   go version

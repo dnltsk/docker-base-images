@@ -8,9 +8,11 @@
 # language governing permissions and limitations under the License.
 
 
-# This is a mini bash test framework that outputs the test like go test does
+# This is a mini shell test framework that outputs the test like go test does
 # For usage see files tests.sh and failing-tests.sh and execute them to see
-# bashspec in action
+# spec.sh in action
+
+test ! -t || IS_TTY=true
 
 run_test() {
   local function=$1
@@ -42,7 +44,7 @@ SKIP_TEST() {
   exit 255
 }
 
-assert_re() {
+assert_match() {
   echo $1 | grep -E -m1 -o "$2" | head -n1 | grep -E "$2"
   assert 0 $? "checking '$1' to match '$2'"
 }
@@ -65,9 +67,9 @@ assert() {
   then
     if [ -n "${description}" ]
     then
-      echo -e "\033[1;38;40m${description}\033[m"
+      echo -e "${IS_TTY:+\033[1;38;40m}${description}${IS_TTY:+\033[m}"
     fi
-    echo -e "error: in test ${current_test} \033[1;38;40mexpected '${result}' to be '${expected}'\033[m"
+    echo -e "error: in test ${current_test} ${IS_TTY:+\033[1;38;40}mexpected '${result}' to be '${expected}'${IS_TTY:+\033[m}"
     exit 1
   else
     set +x
@@ -76,7 +78,7 @@ assert() {
   fi
 }
 
-add_test_file() {
+include() {
   __FILES="${__FILES} $1"
   source $1
 }

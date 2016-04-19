@@ -1,7 +1,7 @@
 #!/bin/bash
 version=${1:?usage: $0 <php version (e.g. 56)>}
 
-source bashspec.sh
+source ./spec.sh
 
 it_should_have_the_latest_php_image_version() {
   tmp_dir=$(mktemp -d .php-compare-${version}.XXXXXX)

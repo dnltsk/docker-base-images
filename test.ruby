@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./bashspec.sh
+source ./spec.sh
 
 it_should_have_ruby_executable_in_path() {
   ruby --version
