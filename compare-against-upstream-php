@@ -13,7 +13,7 @@ it_should_have_the_latest_php_image_version() {
   for f in *
   do
     echo "verifying $f"
-    if ! diff -r $f ../$f
+    if ! diff -r ${PWD}/$f ${PWD}/../$f
     then
       echo "$f was updated in the original php image"
       exit 1
