@@ -21,24 +21,24 @@ it_should_run_correct_php_version() {
 }
 
 it_should_correctly_run_echo() {
-  assert~ "$(curl localhost:8080/test.php)" "PHP TEST: echo" "'echo' in php should work"
+  assert_match "$(curl localhost:8080/test.php)" "PHP TEST: echo" "'echo' in php should work"
 }
 
 it_should_have_memcached() {
-  assert~ "$(curl localhost:8080/test.php)" "PHP TEST: memcached" "memcached should be available"
+  assert_match "$(curl localhost:8080/test.php)" "PHP TEST: memcached" "memcached should be available"
 }
 
 it_should_redirect_monolog_stdout_to_stdout() {
-  assert~ "$(cat ${STDOUT_FILE})" "PHP TEST: monolog info to stdout"
-  assert~ "$(cat ${STDOUT_FILE})" "PHP TEST: monolog warning to stdout"
+  assert_match "$(cat ${STDOUT_FILE})" "PHP TEST: monolog info to stdout"
+  assert_match "$(cat ${STDOUT_FILE})" "PHP TEST: monolog warning to stdout"
 }
 
 it_should_redirect_monolog_stderr_to_stderr() {
-  assert~ "$(cat ${STDERR_FILE})" "PHP TEST: monolog error to stderr"
+  assert_match "$(cat ${STDERR_FILE})" "PHP TEST: monolog error to stderr"
 }
 
 it_should_redirect_error_log_to_stderr() {
-  assert~ "$(cat ${STDERR_FILE})" "PHP TEST: error_log"
+  assert_match "$(cat ${STDERR_FILE})" "PHP TEST: error_log"
 }
 
 
